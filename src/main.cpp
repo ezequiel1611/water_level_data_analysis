@@ -35,7 +35,7 @@ float SoundVel, Level;
 
 // PI CONTROLLER
 int setpoint = 0;
-int PWMset = 0, PWM_prev = 0, flag = 0;
+int PWMset = 0, PWM_prev = 0;
 float error = 0, error_prev = 0, integral = 0;
 
 // put function declarations here:
@@ -74,6 +74,10 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
+  if (Serial.available() > 0) {
+    setpoint = Serial.parseInt();  // Leer el setpoint del puerto serie
+  }
+  // Mide el caudal de entrada, de salida y el nivel del agua
   QIn = (CountIn * KInput)*2.0;
   QOut = (CountOut * KOutput)*2.0;
   if((millis()-lastTime)>500){
@@ -90,13 +94,14 @@ void loop() {
   error = setpoint - Level;
   integral = error + error_prev;
   PWMset = (error * Kp) + PWM_prev + (Ki * Ts * 0.5 * integral);
+  // Se limita el PWM para no tener valores no válidos
   if (PWMset >= 1023){
     PWMset = 1023;
   }
   if (PWMset <= 0){
     PWMset = 0;
   }
-  analogWrite(WaterPump, (flag * PWMset));
+  analogWrite(WaterPump, PWMset);
   error_prev = error;
   PWM_prev = PWMset;
   SendData();

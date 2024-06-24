@@ -2,8 +2,22 @@ import serial
 import scipy.io as sio
 import time
 
+# Solicitar al usuario el setpoint del nivel del agua
+while True:
+    try:
+        setpoint = int(input("Ingrese el setpoint del nivel del agua (entre 10 y 40): "))
+        if 10 <= setpoint <= 40:
+            break
+        else:
+            print("Por favor, ingrese un valor entre 10 y 40.")
+    except ValueError:
+        print("Entrada no válida. Por favor, ingrese un número entero.")
+
 # Configurar el puerto serie
-ser = serial.Serial('COM3', 115200)  # Reemplazar 'COM3' con el puerto serie correcto
+ser = serial.Serial('/dev/ttyUSB0', 115200)
+
+# Enviar el setpoint al ESP8266
+ser.write(f"{setpoint}\n".encode())
 
 # Listas para almacenar los datos
 QIn_data = []
