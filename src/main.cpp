@@ -14,7 +14,7 @@
 #define STDEV 0.27 // Desviación Estandar del HC-SR04
 
 // FILTRO DE KALMAN
-SimpleKalmanFilter kalmanFilter(STDEV, 1, 1);
+SimpleKalmanFilter kalmanFilter(STDEV, 1, 0.5);
 
 // PINES
 const byte FlowmeterIn = 14, // (D5) Sensor de Entrada al Tanque
@@ -32,6 +32,7 @@ volatile int CountIn = 0, CountOut = 0; // Contadores de pulsos
 unsigned long TimeRef = 0, PreviousTime = 0, CurrentTime = 0, Ts = 0;
 unsigned long lastTime = 0;
 float SoundVel, Level;
+String command = "nothing";
 
 // PI CONTROLLER
 int setpoint = 0;
@@ -67,6 +68,15 @@ void setup() {
   }
   // Mido la velocidad del sonido
   SoundVel = SetSoundVelocity();
+  // Leer el setpoint desde el puerto serie
+  do{
+    if(Serial.available() > 0){
+      command = Serial.readStringUntil('\n');
+    }
+  } while(command == "nothing");
+  setpoint = command.toInt();
+  Serial.print("Setpoint recibido: ");
+  Serial.println(setpoint);
   // Enciendo el LED de Status
   digitalWrite(LedOn, HIGH);
   PreviousTime = millis();
@@ -74,16 +84,14 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  if (Serial.available() > 0) {
-    setpoint = Serial.parseInt();  // Leer el setpoint del puerto serie
-  }
   // Mide el caudal de entrada, de salida y el nivel del agua
-  QIn = (CountIn * KInput)*2.0;
-  QOut = (CountOut * KOutput)*2.0;
-  if((millis()-lastTime)>500){
+  QIn = (CountIn * KInput);
+  QOut = (CountOut * KOutput);
+  if((millis()-lastTime)>1000){
     CountIn = 0;
     CountOut = 0;
     Level = getLevelDistance();
+    SendData();
     lastTime = millis();
   }
   // Calcular el periodo de muestreo para el PI
@@ -104,7 +112,6 @@ void loop() {
   analogWrite(WaterPump, PWMset);
   error_prev = error;
   PWM_prev = PWMset;
-  SendData();
 }
 
 // put function definitions here:

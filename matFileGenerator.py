@@ -18,6 +18,17 @@ ser = serial.Serial('/dev/ttyUSB0', 115200)
 
 # Enviar el setpoint al ESP8266
 ser.write(f"{setpoint}\n".encode())
+print(f"Setpoint ingresado: {setpoint}")
+
+# Leer y mostrar la confirmación del ESP8266
+while True:
+    try:
+        confirmation = ser.readline().decode('utf-8').strip()
+        if confirmation:
+            print(f"Confirmación recibida del ESP8266: {confirmation}")
+            break
+    except UnicodeDecodeError:
+        continue
 
 # Listas para almacenar los datos
 QIn_data = []
@@ -28,7 +39,11 @@ PWMset_data = []
 try:
     while True:
         # Leer una línea del puerto serie
-        line = ser.readline().decode('utf-8').strip()
+        try:
+            line = ser.readline().decode('utf-8').strip()
+            print(f"Línea leída del puerto serie: {line}")
+        except UnicodeDecodeError:
+            continue
         
         # Dividir los datos
         data = line.split(';')
