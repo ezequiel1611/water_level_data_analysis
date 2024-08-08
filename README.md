@@ -33,8 +33,9 @@ analizar los datos con herramientas como GNU Octave o MatLab.
   - Paquete scipy
 
 # Clonar Repositorio
-Para poder usar el sistema mediante la interfaz gráfica desarrollada se debe descargar este repositorio
-para así compilar y subir tanto el código de control como la página web al micrcontrolador ESP8266.
+Para poder usar el sistema y almacenar todos los datos en un archivo .mat para su posterior análisis
+se debe descargar este repositorio para así compilar y subir el código `main.cpp` al micrcontrolador ESP826,
+y usar el script de Python `matFileGenerator.py`.
 
 ## Linux
 1. **Abrir una Terminal de Comandos:** Ubiquese en la carpeta donde quiera descargar el repositorio y
