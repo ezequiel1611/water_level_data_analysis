@@ -60,6 +60,15 @@ Por ejemplo, si quiere tener el repositorio en una carpeta llamada `Scripts` en 
 y presione `Enter` para crear una copia local de este repositorio en su computadora.
 
 # Como Usar el Script de Python
+Antes de ejecutar el script deberá abrirlo con un editor de texto o su IDE de python de preferencia,
+allí deberá corroborar que el puerto usado en el script es el mismo que usted tiene asignado para
+el microcontrolador ESP8266. Esto se ve en la línea:
+  ```
+  ser = serial.Serial('/dev/ttyUSB0', 115200)
+  ```
+En el caso de Linux coloque el puerto ttyUSB correspondiente y en el caso de Windows coloque el puerto
+COM correspondiente para su microcontrolador.
+
 ## Linux
 1. **Abrir una Terminal de Comandos:** Ubiquese en la carpeta se encuentra el archivo `matFileGenerator.py`,
 haga click derecho y seleccione la opción `Abrir en una terminal`.
