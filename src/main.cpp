@@ -10,8 +10,8 @@
 #define SOUND_VELOCITY 331 // m/s Velocidad del sonido a T amb
 #define Kp 35.615 //Constante Proporcional
 #define Ki 4.58   //Constante Integral
-#define HEIGHT 54.79  //Distancia al fondo del tanque
-#define STDEV 0.27 // Desviación Estandar del HC-SR04
+#define HEIGHT 54.19  //Distancia al fondo del tanque
+#define STDEV 0.35 // Desviación Estandar del HC-SR04 (0.27)
 
 // FILTRO DE KALMAN
 SimpleKalmanFilter kalmanFilter(STDEV, 1, 0.5);
@@ -33,6 +33,7 @@ unsigned long TimeRef = 0, PreviousTime = 0, CurrentTime = 0, Ts = 0;
 unsigned long lastTime = 0;
 float SoundVel, Level;
 String command = "nothing";
+int PWM_user = 0;
 
 // PI CONTROLLER
 int setpoint = 0;
@@ -74,12 +75,15 @@ void setup() {
       command = Serial.readStringUntil('\n');
     }
   } while(command == "nothing");
-  setpoint = command.toInt();
+  PWM_user = command.toInt();
+  Serial.print("PWM recibido: ");
+  Serial.println(PWM_user);
+  /*setpoint = command.toInt();
   Serial.print("Setpoint recibido: ");
-  Serial.println(setpoint);
+  Serial.println(setpoint);*/
   // Enciendo el LED de Status
   digitalWrite(LedOn, HIGH);
-  PreviousTime = millis();
+  //PreviousTime = millis();
 }
 
 void loop() {
@@ -94,8 +98,15 @@ void loop() {
     SendData();
     lastTime = millis();
   }
+  if (PWM_user >= 1023){
+    PWM_user = 1023;
+  }
+  if (PWM_user <= 0){
+    PWM_user = 0;
+  }
+  analogWrite(WaterPump, PWM_user);
   // Calcular el periodo de muestreo para el PI
-  CurrentTime = millis();
+  /*CurrentTime = millis();
   Ts = (CurrentTime - PreviousTime) / 1000.0; // Convertir a segundos
   PreviousTime = CurrentTime;
   // Calculo el PWM con el controlador PI
@@ -111,7 +122,7 @@ void loop() {
   }
   analogWrite(WaterPump, PWMset);
   error_prev = error;
-  PWM_prev = PWMset;
+  PWM_prev = PWMset;*/
 }
 
 // put function definitions here:
@@ -169,5 +180,5 @@ void SendData(){
   Serial.print(";");
   Serial.print(Level);
   Serial.print(";");
-  Serial.println(PWMset);
+  Serial.println(PWM_user);
 }

@@ -5,8 +5,8 @@ import time
 # Solicitar al usuario el setpoint del nivel del agua
 while True:
     try:
-        setpoint = int(input("Ingrese el setpoint del nivel del agua (entre 10 y 40): "))
-        if 10 <= setpoint <= 40:
+        setpoint = int(input("Ingrese el PWM de la bomba de agua (entre 0 y 1023): "))
+        if 0 <= setpoint <= 1023:
             break
         else:
             print("Por favor, ingrese un valor entre 10 y 40.")
@@ -18,7 +18,7 @@ ser = serial.Serial('/dev/ttyUSB0', 115200)
 
 # Enviar el setpoint al ESP8266
 ser.write(f"{setpoint}\n".encode())
-print(f"Setpoint ingresado: {setpoint}")
+print(f"PWM ingresado: {setpoint}")
 
 # Leer y mostrar la confirmación del ESP8266
 while True:
