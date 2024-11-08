@@ -13,29 +13,29 @@ manteniendo el nivel estable con un error del 5%.
 
 Este programa permite emplear el sistema de control de nivel por medio de la comunicación
 por puerte serie entre la computadora y el microcontrolador. El usuario debe cargar el programa
-al microcontrolador ESP8266, conectarlo a la computadora y ejecutar el script de python 
-matFileGenerator.py, una vez se ejecuta debe ingresar un valor número para el setpoint del 
-sistema (en centimetros) y así luego el sistema comenzará a funcionar para mantener el nivel
-a la altura indicada mientras se envían los datos del nivel, caudal de entrada, caudal de salida y PWM
-por puerto serie a la aplicación en python la cual al cerrarla generará un archivo .mat con todos
-los datos recopilados desde el momento que el sistema comenzó a funcionar. De esta forma se pueden
-analizar los datos con herramientas como GNU Octave o MatLab.
+al microcontrolador ESP8266, conectarlo a la computadora y ejecutar la aplicación WaterTank , 
+una vez se ejecuta debe ingresar el puerto serie del microcontrolador y luego un valor númerico
+para el PWM de la bomba de agua y así el sistema comenzará a funcionar ingresando agua al tanque
+y verá que también sale agua del mismo. En algún punto, según el PWM ingresado, el sistema llegará
+al punto de equilibrio manteniendo estable el nivel del agua y serán iguales los valores de caudal
+de salida y de entrada, todos estos datos se envían por puerto serie a la aplicación la cual
+al cerrarla generará un archivo .mat con todos los datos recopilados desde el momento que el 
+sistema comenzó a funcionar. De esta forma se pueden analizar los datos con herramientas 
+como GNU Octave o MatLab.
 
 # Requisitos
+- Git
 - Visual Studio Code
 - PlatformIO
   - Librería Wire
   - Librería SPI
   - Librería Adafruit_BMP085
   - Librería SimpleKalmanFilter
-- Python 3
-  - Paquete serial
-  - Paquete scipy
 
 # Clonar Repositorio
 Para poder usar el sistema y almacenar todos los datos en un archivo .mat para su posterior análisis
 se debe descargar este repositorio para así compilar y subir el código `main.cpp` al micrcontrolador ESP826,
-y usar el script de Python `matFileGenerator.py`.
+y usar la aplicación `WaterTank` correspondiente a su sistema operativo.
 
 ## Linux
 1. **Abrir una Terminal de Comandos:** Ubiquese en la carpeta donde quiera descargar el repositorio y
@@ -60,39 +60,12 @@ Por ejemplo, si quiere tener el repositorio en una carpeta llamada `Scripts` en 
   ```
 y presione `Enter` para crear una copia local de este repositorio en su computadora.
 
-# Como Usar el Script de Python
-Antes de ejecutar el script deberá abrirlo con un editor de texto o su IDE de python de preferencia,
-allí deberá corroborar que el puerto usado en el script es el mismo que usted tiene asignado para
-el microcontrolador ESP8266. Esto se ve en la línea:
-  ```
-  ser = serial.Serial('/dev/ttyUSB0', 115200)
-  ```
-En el caso de Linux coloque el puerto ttyUSB correspondiente y en el caso de Windows coloque el puerto
-COM correspondiente para su microcontrolador.
-
-## Linux
-1. **Abrir una Terminal de Comandos:** Ubiquese en la carpeta se encuentra el archivo `matFileGenerator.py`,
-haga click derecho y seleccione la opción `Abrir en una terminal`.
-2. **Ejecute el Script:** Una vez abierta la terminal de comandos debe escribir:
-   ```
-   python3 matFileGenerator.py
-   ```
-3. **Use el Script:** Ahora el programa se estará ejecutando en la terminal de comandos, verá que le pide
-ingresar un setpoint en centímetros para comenzar a usar el sistema, escriba el setpoint como números enteros
-y presione `Enter`. El sistema comenzará a funcionar y usted podrá ver la información que esta mandando en tiempo
-real el microcontrolador. Cuando desee detener el sistema y obtener su archivo .mat presione las teclas `Ctrl+C`.
-El programa se detendrá y usted verá que se creó un archivo `data.mat` en la carpeta.
-
-## Windows
-1. **Configure el Script:** Haga click derecho en el script `matFileGenerator.py` y seleccione `Propiedades`, allí
-deberá seleccionar que el archivo se abra con Python.
-2. **Ejecute el Script:** Ahora que se estableció que el archivo se abra con Python, solo deberá hacer doble click en
-el archivo `matFileGenerator.py`.
-3. 3. **Use el Script:** Ahora el programa se estará ejecutando en el símbolo del sistema, verá que le pide
-ingresar un setpoint en centímetros para comenzar a usar el sistema, escriba el setpoint como números enteros
-y presione `Enter`. El sistema comenzará a funcionar y usted podrá ver la información que esta mandando en tiempo
-real el microcontrolador. Cuando desee detener el sistema y obtener su archivo .mat presione las teclas `Ctrl+C`.
-El programa se detendrá y usted verá que se creó un archivo `data.mat` en la carpeta.
+# Como Usar la Aplicación WaterTank
+Verá que en la carpeta `WaterTank` se encuentran dos carpetas `WinDist` y `LinDist` que contienen las
+distribuciones de la aplicación para Windows y para Linux respectivamente. Dirigase a la carpeta que
+corresponde a su sistema operativo y dentro de del directorio `dist` encontrará el archivo ejecutable
+de la aplicación, al hacer doble click la misma se iniciará mostrando una ventana emergente donde
+deberá ingresar el puerto serie asociado al ESP8266.
 
 # Analisis de los Datos
 El archivo `data.mat` puede ser cargado al entorno de GNU Octave o MatLab usando el comando
