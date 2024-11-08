@@ -67,6 +67,25 @@ corresponde a su sistema operativo y dentro de del directorio `dist` encontrará
 de la aplicación, al hacer doble click la misma se iniciará mostrando una ventana emergente donde
 deberá ingresar el puerto serie asociado al ESP8266.
 
+![Configuración del Puerto Serie](https://github.com/ezequiel1611/water_level_data_analysis/blob/main/test/puerto_serie.png)
+
+Una vez ingresado el puerto serie al que se encuentra conectado el microcontorlado, deberá especificar
+un valor para el PWM de la bomba de agua (entre 0 y 1023).
+
+![Configuración del PWM de la Bomba](https://github.com/ezequiel1611/water_level_data_analysis/blob/main/test/pwm.png)
+
+Ahora la aplicación comenzará a recopilar datos del microcontrolador, usted podrá ver en la parte
+superior de la aplicación la información en tiempo real de los caudales de entrada y de salida
+del tanque y en un gráfico central se vera la información en tiempo real del nivel del agua. En todo
+momento usted podrá pausar o reanudar la toma de datos haciendo click en el botón `Pausar/Reanudar`.
+
+![Vista Previa de la Aplicación](https://github.com/ezequiel1611/water_level_data_analysis/blob/main/test/ejemplo.png)
+
+Cuando desee terminar la prueba haga click en el botón `Salir` para cerrar así la aplicación y obtener,
+en el mismo directorio donde se encuentra el ejecutable, un archivo llamado `data.mat` el cual contiene
+la información de los datos de caudal de entrada, caudal de salida, PWM y nível del líquido recibidos
+durante la sesión.
+
 # Analisis de los Datos
 El archivo `data.mat` puede ser cargado al entorno de GNU Octave o MatLab usando el comando
   ```
@@ -78,3 +97,6 @@ de entrada en ml/s y el caudal de salida en ml/s respectivamente. Usted ahora pu
 dato de forma independiente, como por ejemplo visualizarla de forma gráfica con el comando `plot(Level)`.
 
 ![Visualización del Nivel del Líquido](https://github.com/ezequiel1611/water_level_data_analysis/blob/main/test/kalman_data.jpg)
+
+Esta aplicación y generación de archivo de datos está pensada para poder realizar una identificación y
+análisis de la respuesta al impulso del sistema.
