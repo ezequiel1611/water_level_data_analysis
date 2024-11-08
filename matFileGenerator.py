@@ -2,23 +2,23 @@ import serial
 import scipy.io as sio
 import time
 
-# Solicitar al usuario el setpoint del nivel del agua
+# Solicitar al usuario el PWM de la bomba
 while True:
     try:
-        setpoint = int(input("Ingrese el PWM de la bomba de agua (entre 0 y 1023): "))
-        if 0 <= setpoint <= 1023:
+        PWM_user = int(input("Ingrese el PWM de la bomba de agua (entre 0 y 1023): "))
+        if 0 <= PWM_user <= 1023:
             break
         else:
-            print("Por favor, ingrese un valor entre 10 y 40.")
+            print("Por favor, ingrese un valor entre 0 y 1023.")
     except ValueError:
         print("Entrada no válida. Por favor, ingrese un número entero.")
 
 # Configurar el puerto serie
 ser = serial.Serial('/dev/ttyUSB0', 115200)
 
-# Enviar el setpoint al ESP8266
-ser.write(f"{setpoint}\n".encode())
-print(f"PWM ingresado: {setpoint}")
+# Enviar el PWM al ESP8266
+ser.write(f"{PWM_user}\n".encode())
+print(f"PWM ingresado: {PWM_user}")
 
 # Leer y mostrar la confirmación del ESP8266
 while True:
@@ -65,7 +65,7 @@ try:
             })
             
 except KeyboardInterrupt:
-    # Guardar los datos en un archivo .mat al terminar
+    # Guardar los datos en un archivo .mat al terminar (presionar Ctrl+C)
     sio.savemat('data.mat', {
         'QIn': QIn_data,
         'QOut': QOut_data,
