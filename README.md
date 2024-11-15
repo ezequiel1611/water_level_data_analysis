@@ -12,16 +12,19 @@ lineal de funcionamiento y que dentro del mismo el controlador PI funciona corre
 manteniendo el nivel estable con un error del 5%.
 
 Este programa permite emplear el sistema de control de nivel por medio de la comunicación
-por puerte serie entre la computadora y el microcontrolador. El usuario debe cargar el programa
-al microcontrolador ESP8266, conectarlo a la computadora y ejecutar la aplicación WaterTank , 
-una vez se ejecuta debe ingresar el puerto serie del microcontrolador y luego un valor númerico
-para el PWM de la bomba de agua y así el sistema comenzará a funcionar ingresando agua al tanque
-y verá que también sale agua del mismo. En algún punto, según el PWM ingresado, el sistema llegará
-al punto de equilibrio manteniendo estable el nivel del agua y serán iguales los valores de caudal
-de salida y de entrada, todos estos datos se envían por puerto serie a la aplicación la cual
-al cerrarla generará un archivo .mat con todos los datos recopilados desde el momento que el 
-sistema comenzó a funcionar. De esta forma se pueden analizar los datos con herramientas 
-como GNU Octave o MatLab.
+por puerte serie entre la computadora y el microcontrolador para realizar la identificación
+del sistema, pensado para emplearse en la cátedra de Sistemas de Control de la UTN Facultad
+Regional Paraná. 
+
+El usuario debe cargar el programa al microcontrolador ESP8266, conectarlo a la computadora 
+y ejecutar la aplicación WaterTank, una vez se ejecuta debe ingresar el puerto serie del 
+microcontrolador y luego un valor númerico para el PWM de la bomba de agua y así el sistema
+comenzará a funcionar ingresando agua al tanque y verá que también sale agua del mismo. 
+En algún punto, según el PWM ingresado, el sistema llegará al punto de equilibrio manteniendo 
+estable el nivel del agua y serán iguales los valores de caudal de salida y de entrada, todos 
+estos datos se envían por puerto serie a la aplicación la cual al cerrarla generará un archivo
+con formato .mat con todos los datos recopilados desde el momento que el sistema comenzó 
+a funcionar. De esta forma se pueden analizar los datos con herramientas como GNU Octave o MatLab.
 
 # Requisitos
 - Git
@@ -61,13 +64,24 @@ Por ejemplo, si quiere tener el repositorio en una carpeta llamada `Scripts` en 
 y presione `Enter` para crear una copia local de este repositorio en su computadora.
 
 # Como Usar la Aplicación WaterTank
-Verá que en la carpeta `WaterTank` se encuentran dos carpetas `WinDist` y `LinDist` que contienen las
-distribuciones de la aplicación para Windows y para Linux respectivamente. Dirigase a la carpeta que
-corresponde a su sistema operativo y dentro de del directorio `dist` encontrará el archivo ejecutable
-de la aplicación, al hacer doble click la misma se iniciará mostrando una ventana emergente donde
-deberá ingresar el puerto serie asociado al ESP8266.
+En la sección `Release` verá la "Aplicación del Tanque de Agua", haga click en el enlace y será
+redireccionado esta sección donde podrá ver una breve descripción de la aplicación y encontrará
+también al final varios archivos para descargar:
+
+
+
+De los archivos de la lista deberá hacer click en la `WinDist` o `LinDist` de acuerdo a su sistema
+operativo, de ser Windows deberá descargar la versión `WinDist` y en el caso de versiones de Linux
+basadas en Ubuntu deberá descargar la versión `LinDist`. 
+Una vez descargado el archivo .zip correspondiente, extraiga su contenido y entre en la carpeta
+creada, una vez allí dirigase a la carpeta `dist` y encontrará en ella el archivo ejecutable de la
+aplicación, al hacer doble click la misma se iniciará mostrando una ventana emergente donde deberá 
+ingresar el puerto serie asociado al ESP8266.
 
 ![Configuración del Puerto Serie](https://github.com/ezequiel1611/water_level_data_analysis/blob/main/test/puerto_serie.png)
+
+Tenga en cuenta que la nomenclatura usada para los puertos serie cambia entre Windows y Linux, por
+defecto la aplicación mostrará el puerto predefinido usado en sistemas Linux.
 
 Una vez ingresado el puerto serie al que se encuentra conectado el microcontorlado, deberá especificar
 un valor para el PWM de la bomba de agua (entre 0 y 1023).
