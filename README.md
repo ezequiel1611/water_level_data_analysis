@@ -68,7 +68,7 @@ En la sección `Release` verá la "Aplicación del Tanque de Agua", haga click e
 redireccionado esta sección donde podrá ver una breve descripción de la aplicación y encontrará
 también al final varios archivos para descargar:
 
-
+![Release](https://github.com/ezequiel1611/water_level_data_analysis/blob/main/test/release.png)
 
 De los archivos de la lista deberá hacer click en la `WinDist` o `LinDist` de acuerdo a su sistema
 operativo, de ser Windows deberá descargar la versión `WinDist` y en el caso de versiones de Linux
