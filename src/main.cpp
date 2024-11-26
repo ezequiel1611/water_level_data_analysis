@@ -11,10 +11,10 @@
 #define Kp 35.615 //Constante Proporcional
 #define Ki 4.58   //Constante Integral
 #define HEIGHT 54.19  //Distancia al fondo del tanque
-#define STDEV 0.35 // Desviación Estandar del HC-SR04 (0.27)
+#define STDEV 0.35 // Desviación Estandar del HC-SR04
 
 // FILTRO DE KALMAN
-SimpleKalmanFilter kalmanFilter(STDEV, 1, 0.5);
+SimpleKalmanFilter kalmanFilter(STDEV, STDEV, 0.75);
 
 // PINES
 const byte FlowmeterIn = 14, // (D5) Sensor de Entrada al Tanque
@@ -29,7 +29,6 @@ Adafruit_BMP085 bmp;         // D1=SCL D2=SDA Sensor de Temperatura
 // VARIABLES
 double QIn = 0, QOut = 0;               // Caudales medidos
 volatile int CountIn = 0, CountOut = 0; // Contadores de pulsos
-unsigned long TimeRef = 0, PreviousTime = 0, CurrentTime = 0, Ts = 0;
 unsigned long lastTime = 0;
 float SoundVel, Level;
 String command = "nothing";
@@ -78,12 +77,8 @@ void setup() {
   PWM_user = command.toInt();
   Serial.print("PWM recibido: ");
   Serial.println(PWM_user);
-  /*setpoint = command.toInt();
-  Serial.print("Setpoint recibido: ");
-  Serial.println(setpoint);*/
   // Enciendo el LED de Status
   digitalWrite(LedOn, HIGH);
-  //PreviousTime = millis();
 }
 
 void loop() {
@@ -105,24 +100,6 @@ void loop() {
     PWM_user = 0;
   }
   analogWrite(WaterPump, PWM_user);
-  // Calcular el periodo de muestreo para el PI
-  /*CurrentTime = millis();
-  Ts = (CurrentTime - PreviousTime) / 1000.0; // Convertir a segundos
-  PreviousTime = CurrentTime;
-  // Calculo el PWM con el controlador PI
-  error = setpoint - Level;
-  integral = error + error_prev;
-  PWMset = (error * Kp) + PWM_prev + (Ki * Ts * 0.5 * integral);
-  // Se limita el PWM para no tener valores no válidos
-  if (PWMset >= 1023){
-    PWMset = 1023;
-  }
-  if (PWMset <= 0){
-    PWMset = 0;
-  }
-  analogWrite(WaterPump, PWMset);
-  error_prev = error;
-  PWM_prev = PWMset;*/
 }
 
 // put function definitions here:
